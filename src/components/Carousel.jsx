@@ -1,30 +1,65 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import "./Carousel.css";
 import { images } from "../data/CarouselData";
-
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-function Carousel() {
-    const[index,setIndex] = useState(0);
 
-    const decreaseindex = () =>{
-        index != 0 ?
-        setIndex(index - 1) : setIndex(images.length - 1)
+
+
+
+class Carousel extends Component {
+    constructor() {
+      super();
+      this.state = {
+        current_count: 0,
+      };
     }
-    const increaseindex = () =>{
-        index == images.length - 1 ? setIndex(0): setIndex(index + 1)
+  
+    increase = () => {
+      if (this.state.current_count === images.length - 1) {
+        this.setState({
+          current_count: 0,
+        });
+      } else {
+        this.setState({
+          current_count: this.state.current_count + 1,
+        });
+      }
+    };
+  
+    decrease = () => {
+      if (this.state.current_count === 0) {
+        this.setState({
+          current_count: images.length - 1,
+        });
+      } else {
+        this.setState({
+          current_count: this.state.current_count - 1,
+        });
+      }
+    };
+  
+    render() {
+      return (
+        <>
+          <div className="carousel-container flex">
+            <div className="leftArrow arrowDiv flex" onClick={this.decrease}>
+              <ArrowBackIosIcon />
+            </div>
+  
+            <h2 className="title">{images[this.state.current_count].title}</h2>
+            <img src={images[this.state.current_count].img} alt="image" />
+            <h4 className="caption">{images[this.state.current_count].subtitle}</h4>
+  
+            <div className="rightArrow arrowDiv flex" onClick={this.increase}>
+              <ArrowForwardIosIcon />
+            </div>
+          </div>
+        </>
+      );
     }
-    return(
-
-        <div className="caraousel-container flex">
-            <div className="leftarrow arrowdiv flex"><ArrowBackIosIcon className="white" onClick={decreaseindex}/></div>
-            <h1 className="title">{images[index].title}</h1>
-            <img src={images[index].img} alt="" />
-            <h4 className="caption">{images[index].subtitle}</h4>
-            <div className="rightarrow arrowdiv flex"><ArrowForwardIosIcon className="white" onClick={increaseindex}/></div>
-        </div>
-    )
-}
-
-export default Carousel;
+  }
+  
+  export default Carousel;
+  
